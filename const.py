@@ -7,9 +7,12 @@ INDEX_HTML = """
   </head>
   <body>
     <h1>Camera</h1>
-    <img src="/mjpg">
+    <img src="/jpg">
   </body>
 </html>
 
 """
+
+PATH_TO_LATEST_JPG = "/run/shm/1.jpg"
+CAPTURE_COMMAND = "raspistill -t 500 -n -w 800 -h 600 -vf -o /run/shm/1.jpg"
 
