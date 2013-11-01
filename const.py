@@ -10,6 +10,9 @@ INDEX_HTML = """
     <img src="/jpg" id="webcam_view">
     <script>
     var im = document.getElementById("webcam_view");
+    setTimeout(function(){
+        im.src = "/jpg?rand=" + Math.random();
+    }, 5000);
     </script>
   </body>
 </html>

@@ -9,6 +9,8 @@ urls = (
     "/", "index",
     "/jpg", "jpg"
 )
+# HACK
+LAST_CAPTURE = 0
 
 
 class index:
@@ -17,13 +19,12 @@ class index:
 
 
 class jpg:
-    def __init__(self):
-        self.last_capture = 0
-
     def GET(self):
-	if time.time() > (self.last_capture + MINIMUM_TIME_BETWEEN_CAPTURES):
+        # HACK
+        global LAST_CAPTURE
+	if time.time() > (LAST_CAPTURE + MINIMUM_TIME_BETWEEN_CAPTURES):
                 subprocess.call(CAPTURE_COMMAND)
-                self.last_capture = time.time()
+                LAST_CAPTURE = time.time()
         web.header("Content-Type", "image/jpeg")
         out = open(PATH_TO_LATEST_JPG, "rb").read()
         return out
