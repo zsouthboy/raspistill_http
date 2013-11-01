@@ -27,19 +27,19 @@ def ok_to_capture():
     # we're not killing the poor raspberry pi sdcard
     if not os.path.exists(LOCKFILE):
         open(LOCKFILE, "w").write(str(time.time()))
+        True
     if time.time() > (float(open(LOCKFILE).read()) + MINIMUM_TIME_BETWEEN_CAPTURES):
         return True
     return False
 
 
 def get_image():
-    while not ok_to_capture():
-        sys.sleep(1)
-    res = subprocess.call(CAPTURE_COMMAND)
-    if res == 0:
-        img = open(PATH_TO_LATEST_JPG, "rb").read()
-    else:
-        return "DEADBEEF"
+    if ok_to_capture():
+        open(LOCKFILE, "w").write(str(time.time()))
+        res = subprocess.call(CAPTURE_COMMAND)
+        if res != 0:
+            return "DEADBEEF"
+    img = open(PATH_TO_LATEST_JPG, "rb").read()
     return img
 
 if __name__ == "__main__":
