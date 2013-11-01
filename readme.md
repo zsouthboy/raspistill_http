@@ -5,9 +5,9 @@ A simple python script using web.py that serves images from a Raspberry Pi with 
 
 Usage
 -----
-*Run
+* Run
 `./raspistill_http.py` 
-*Then browse to <your raspberry pi's IP>:8080
+* Then browse to <your raspberry pi's IP>:8080
 
 Installation
 ------------
