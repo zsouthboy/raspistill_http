@@ -3,5 +3,11 @@ A simple python script using web.py that serves images like a webcam.
 Usage:
 raspistill_http --width n --height n --quality nn
 
+Installation:
+*Install web.py
+sudo apt-get install python-webpy
+*clone this repository
+xxx
+
 License: public domain.
 
