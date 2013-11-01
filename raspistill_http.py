@@ -5,7 +5,8 @@ import subprocess
 from const import *
 
 urls = (
-    "/", "index"
+    "/", "index",
+    "/jpg", "jpg"
 )
 
 
