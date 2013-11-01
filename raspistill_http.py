@@ -9,8 +9,8 @@ urls = (
     "/", "index",
     "/jpg", "jpg"
 )
-# HACK
-LAST_CAPTURE = 0
+# HACK. ugh
+LAST_CAPTURE = time.time() - MINIMUM_TIME_BETWEEN_CAPTURES
 
 
 class index:
