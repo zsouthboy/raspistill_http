@@ -24,7 +24,6 @@ class jpg:
                 subprocess.call(CAPTURE_COMMAND)
                 open(LOCKFILE, "w").write(str(time.time()))
         web.header("Content-Type", "image/jpeg")
-        out = open(PATH_TO_LATEST_JPG, "rb").read()
         return out
 
 def ok_to_capture():
@@ -34,6 +33,17 @@ def ok_to_capture():
     if time.time() > (float(open(LOCKFILE).read()) + MINIMUM_TIME_BETWEEN_CAPTURES):
         return True
     return False
+
+
+def get_image():
+    while not ok_to_capture():
+        sys.sleep(1)
+    res = subprocess.call(CAPTURE_COMMAND)
+    if res == 0:
+        img = open(PATH_TO_LATEST_JPG, "rb").read()
+    else:
+        return "DEADBEEF"
+    return img
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
