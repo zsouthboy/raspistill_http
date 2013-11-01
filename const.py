@@ -18,4 +18,5 @@ INDEX_HTML = """
 
 PATH_TO_LATEST_JPG = "/run/shm/1.jpg"
 CAPTURE_COMMAND = ["/usr/bin/raspistill", "-t", "200", "-n", "-w", "800", "-h", "600", "-vf", "-o", "/run/shm/1.jpg"]
+MINIMUM_TIME_BETWEEN_CAPTURES = 60  # seconds
 
