@@ -5,8 +5,23 @@
 #include <syslog.h>
 #include <unistd.h>
 #include <signal.h>
+
+#include "bcm_host.h"
+#include "interface/vcos/vcos.h"
+#include "interface/mmal/mmal.h"
+#include "interface/mmal/util/mmal_default_components.h"
+#include "interface/mmal/util/mmal_connection.h"
+
 #define NAME "rpishd Daemon for Raspistill_http"
 #define VERSION "0.1"
+
+/* defines from raspistill.c directly */
+#define CAMERA_NUMBER 0
+#define MMAL_CAMERA_PREVIEW_PORT 0
+#define MMAL_CAMERA_VIDEO_PORT 1
+#define MMAL_CAMERA_CAPTURE_PORT 2
+#define STILLS_FRAME_RATE_NUM 15
+#define STILLS_FRAME_RATE_DEN 1
 
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
@@ -14,8 +29,8 @@ int main(int argc, char *argv[]) {
 		printf("https://github.com/zsouthboy/raspistill_http\n");
 		exit(EXIT_SUCCESS);
 	}
-	setup();
 	daemonize();
+	setup();
 	main_loop();
 	return 0;
 }
@@ -60,7 +75,7 @@ void main_loop(void) {
 
 void setup(void) {
 	/* setup our process to receive signals to our handler */
-	if (signal(SIGINT, handle_signal) == SIG_ERR) {
+	if (signal(SIGTERM, handle_signal) == SIG_ERR) {
 		printf("Couldn't register signal handlers, bailing!");
 		exit(EXIT_FAILURE);
 	}
@@ -68,11 +83,29 @@ void setup(void) {
 		printf("Couldn't register signal handlers, bailing!");
 		exit(EXIT_FAILURE);
 	}
+	/* set up the camera connection and buffers */
+	/* used https://github.com/tasanakorn/rpi-mmal-demo/blob/master/main.c as guide */
+	/* and https://github.com/raspberrypi/userland/blob/master/host_applications/linux/apps/raspicam/RaspiStill.c */
+	MMAL_COMPONENT_T *camera = 0;
+	MMAL_ES_FORMAT_T *format;
+	MMAL_STATUS_T status;
+	MMAL_PORT_T *preview_port = NULL, *video_port = NULL, *still_port = NULL;
+	MMAL_CONNECTION_T *camera_capture_connection = 0;
+	bcm_host_init();
+	status = mmal_component_create(MMAL_COMPONENT_DEFAULT_CAMERA, &camera);
+	if (status != MMAL_SUCCESS) {
+		syslog(LOG_CRIT, "Couldn't initialize camera. Status was %i. Bailing!", status);
+		exit(EXIT_FAILURE);
+	}
+	syslog(LOG_INFO, "Somehow was able to connect the camera. Impressed.");
+	exit(EXIT_SUCCESS);
 }
 
 void handle_signal(int sig) {
-	if (sig == SIGINT || sig == SIGUSR1) {
-		syslog(LOG_INFO, "Caught SIGINT/SIGUSR1, shutting down.");
+	if (sig == SIGTERM || sig == SIGUSR1) {
+		syslog(LOG_INFO, "Caught SIGTERM/SIGUSR1, shutting down.");
+		/* closing the syslog for our program is optional, but why not */
+		closelog();
 		exit(EXIT_SUCCESS);
 	}
 }
