@@ -4,8 +4,14 @@
 #include <stdlib.h>
 #include <syslog.h>
 #include <unistd.h>
+#define NAME "Daemon for Raspistill_http"
+#define VERSION "0.1"
 
-int main(void) {
+int main(int argc, char *argv[]) {
+	if (argc > 1) {
+		printf("%s version %s, compiled %s %s\n", NAME, VERSION, __DATE__, __TIME__);
+		exit(EXIT_SUCCESS);
+	}
 	daemonize();
 	main_loop();
 	return 0;
