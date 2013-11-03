@@ -1,3 +1,3 @@
 all:
-	gcc daemon.c -o bin/daemon
+	gcc daemon.c -o bin/rpishd
 

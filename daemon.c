@@ -4,14 +4,17 @@
 #include <stdlib.h>
 #include <syslog.h>
 #include <unistd.h>
-#define NAME "Daemon for Raspistill_http"
+#include <signal.h>
+#define NAME "rpishd Daemon for Raspistill_http"
 #define VERSION "0.1"
 
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		printf("%s version %s, compiled %s %s\n", NAME, VERSION, __DATE__, __TIME__);
+		printf("https://github.com/zsouthboy/raspistill_http\n");
 		exit(EXIT_SUCCESS);
 	}
+	setup();
 	daemonize();
 	main_loop();
 	return 0;
@@ -32,7 +35,7 @@ void daemonize(void) {
 		}
 
 		/* we'll be sending messages to syslog, set it up to include our PID and throw messages where the system likes for daemons */
-		openlog("raspistill_http_daemon", LOG_PID, LOG_DAEMON);
+		openlog("rpishd", LOG_PID, LOG_DAEMON);
 		syslog(LOG_INFO, "Starting daemon");
 
 		/* next let's set a umask of 0 - just in case we create files later */
@@ -42,9 +45,6 @@ void daemonize(void) {
         	close(STDIN_FILENO);
         	close(STDOUT_FILENO);
         	close(STDERR_FILENO);
-
-		syslog(LOG_INFO, "We're done, going home.");
-		exit(EXIT_SUCCESS);
 	}
 	else {
 		/* parent can exit now */
@@ -52,8 +52,28 @@ void daemonize(void) {
 	}
 }	
 
-void main_loop() {
+void main_loop(void) {
 	while (1) {
 		sleep(1);
 	}
 }
+
+void setup(void) {
+	/* setup our process to receive signals to our handler */
+	if (signal(SIGINT, handle_signal) == SIG_ERR) {
+		printf("Couldn't register signal handlers, bailing!");
+		exit(EXIT_FAILURE);
+	}
+	if (signal(SIGUSR1, handle_signal) == SIG_ERR) {
+		printf("Couldn't register signal handlers, bailing!");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void handle_signal(int sig) {
+	if (sig == SIGINT || sig == SIGUSR1) {
+		syslog(LOG_INFO, "Caught SIGINT/SIGUSR1, shutting down.");
+		exit(EXIT_SUCCESS);
+	}
+}
+
