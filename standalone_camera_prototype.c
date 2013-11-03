@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <bcm_host.h>
+#include "bcm_host.h"
 #include "interface/vcos/vcos.h"
 #include "interface/mmal/mmal.h"
 #include "interface/mmal/util/mmal_default_components.h"
 #include "interface/mmal/util/mmal_connection.h"
+#include "host_applications/linux/apps/raspicam/RaspiCamControl.h"
 
 /* defines from raspistill.c directly */
 #define CAMERA_NUMBER 0
@@ -14,7 +15,7 @@
 #define MMAL_CAMERA_CAPTURE_PORT 2
 #define STILLS_FRAME_RATE_NUM 15
 #define STILLS_FRAME_RATE_DEN 1
-
+#define VIDEO_OUTPUT_BUFFERS_NUM 3
 
 #define WIDTH 800;
 #define HEIGHT 600;
