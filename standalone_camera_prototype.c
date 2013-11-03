@@ -48,7 +48,6 @@ int main(void){
 		printf("Unable to enable control port : error %d", status);
 		goto error;
 	}
-	{
       MMAL_PARAMETER_CAMERA_CONFIG_T cam_config =
       {
          { MMAL_PARAMETER_CAMERA_CONFIG, sizeof(cam_config) },
@@ -65,7 +64,6 @@ int main(void){
       };
 
 	mmal_port_parameter_set(camera->control, &cam_config.hdr);
-	}
 	RASPICAM_CAMERA_PARAMETERS camera_parameters;
 	raspicamcontrol_set_all_parameters(camera, camera_parameters);
 
