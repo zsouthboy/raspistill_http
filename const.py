@@ -1,5 +1,8 @@
 PATH_TO_LATEST_JPG = "/run/shm/1.jpg"
-RASPISTILL_DAEMON = ['bin/daemonize', '-l', '/run/shm/raspistill.lck', '-p', '/run/shm/raspistill.pid', '-c', '/run/shm/', '/usr/bin/raspistill', '-t', '2147483647', '-vf', '-tl', '1000', '-n', '-o', '/run/shm/1.jpg', '-w', '800', '-h', '600', '-q', '35']
+RASPISTILL_LOCKFILE = "/run/shm/raspistill.lck"
+RASPISTILL_PIDFILE = "/run/shm/raspistill.pid"
+# vertically flipping the image by default, remove -vf if you don't need it
+RASPISTILL_DAEMON = ['bin/daemonize', '-l', RASPISTILL_LOCKFILE, '-p', RASPISTILL_PIDFILE, '-c', '/run/shm/', '/usr/bin/raspistill', '-t', '2147483647', '-vf', '-tl', '1000', '-n', '-o', PATH_TO_LATEST_JPG, '-w', '800', '-h', '600', '-q', '35']
 JSREFRESH = 1000
 INDEX_HTML = """
 <!DOCTYPE html>

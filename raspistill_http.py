@@ -14,10 +14,7 @@ urls = (
 
 class index:
     def GET(self):
-	# only if you try to get the index are we going to see if raspistill is running
-	# this'll need to be modified when we allow config via webgui
-	# we've told daemonize to prevent double invocation via .lck file
-	res = subprocess.call(RASPISTILL_DAEMON)
+        start_daemon() 
         return INDEX_HTML
 
 
@@ -27,8 +24,17 @@ class jpg:
         return get_image()
 
 def get_image():
+    if not os.path.exists(RASPISTILL_PIDFILE):
+        start_daemon()
+        # sleep to allow first image to be captured
+        sleep(2)
     img = open(PATH_TO_LATEST_JPG, "rb").read()
     return img
+
+def start_daemon():
+    # safe to call multiple times, daemonize will prevent more than one at a time
+    res = subprocess.call(RASPISTILL_DAEMON)
+    return res
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
