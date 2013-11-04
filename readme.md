@@ -1,8 +1,5 @@
 Raspistill_http
 ===============
-
-![screenshot](https://raw.github.com/zsouthboy/raspistill_http/master/screenshot.png "screenshot of webui")
-
 A simple python script using `web.py` that serves images from a Raspberry Pi with Rasberry Pi Camera, like a webcam might.
 
 The Pi Camera has much higher quality images compared to cheap ip webcams.
