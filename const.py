@@ -1,8 +1,6 @@
 PATH_TO_LATEST_JPG = "/run/shm/1.jpg"
-CAPTURE_COMMAND = ["/usr/bin/raspistill", "-t", "500", "-n", "-w", "400", "-h", "300", "-vf", "-o", "/run/shm/1.jpg"]
-MINIMUM_TIME_BETWEEN_CAPTURES = 5  # seconds
-JSREFRESH = 6000
-LOCKFILE = "/run/shm/raspistill_http.last"
+RASPISTILL_DAEMON = ['bin/daemonize', '-l', '/run/shm/raspistill.lck', '-p', '/run/shm/raspistill.pid', '-c', '/run/shm/', '/usr/bin/raspistill', '-t', '2147483647', '-vf', '-tl', '1000', '-n', '-o', '/run/shm/1.jpg', '-w', '800', '-h', '600', '-q', '35']
+JSREFRESH = 1000
 INDEX_HTML = """
 <!DOCTYPE html>
 <html lang="en">

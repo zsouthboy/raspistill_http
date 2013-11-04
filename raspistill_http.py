@@ -14,6 +14,12 @@ urls = (
 
 class index:
     def GET(self):
+	# only if you try to get the index are we going to see if raspistill is running
+	# this'll need to be modified when we allow config via webgui
+	# we've told daemonize to prevent double invocation via .lck file
+	res = subprocess.call(RASPISTILL_DAEMON)
+	if res != 0:
+		return INDEX_HTML + "raspistill daemon was already running"
         return INDEX_HTML
 
 
@@ -22,23 +28,7 @@ class jpg:
         web.header("Content-Type", "image/jpeg")
         return get_image()
 
-def ok_to_capture():
-    # that's right, read the entire file every time. it's in ram, it'll be ok
-    # we're not killing the poor raspberry pi sdcard
-    if not os.path.exists(LOCKFILE):
-        open(LOCKFILE, "w").write(str(time.time()))
-        True
-    if time.time() > (float(open(LOCKFILE).read()) + MINIMUM_TIME_BETWEEN_CAPTURES):
-        return True
-    return False
-
-
 def get_image():
-    if ok_to_capture():
-        open(LOCKFILE, "w").write(str(time.time()))
-        res = subprocess.call(CAPTURE_COMMAND)
-        if res != 0:
-            return "DEADBEEF"
     img = open(PATH_TO_LATEST_JPG, "rb").read()
     return img
 
