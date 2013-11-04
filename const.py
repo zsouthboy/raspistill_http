@@ -9,7 +9,7 @@ INDEX_HTML = """
     <title>RaspiStill_HTTP Index</title>
   </head>
   <body>
-    <h1>Camera</h1>
+    <h1>raspistill_http Pi Camera</h1>
     <img src="/jpg" id="webcam_view">
     <script>
     var im = document.getElementById("webcam_view");

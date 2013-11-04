@@ -18,8 +18,6 @@ class index:
 	# this'll need to be modified when we allow config via webgui
 	# we've told daemonize to prevent double invocation via .lck file
 	res = subprocess.call(RASPISTILL_DAEMON)
-	if res != 0:
-		return INDEX_HTML + "raspistill daemon was already running"
         return INDEX_HTML
 
 

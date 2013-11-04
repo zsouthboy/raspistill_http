@@ -5,6 +5,7 @@ A simple python script using `web.py` that serves images from a Raspberry Pi wit
 Uses `daemonize` from http://software.clapper.org/daemonize/, a compiled copy is in the bin directory.
 `raspistill` doesn't have a built-in run forever daemon mode, so it's launched with `daemonize` and the appropriate arguments to run for 24d before exiting, after which it will be relaunched for another 24d at the next browsing of the page.
 A simple javascript function refreshes the image in your webbrowser, or use an IP Camera app on your mobile device to watch your Pi Camera.
+Intermediate files are written to RAM filesystem and not your sdcard.
 
 Installation on Raspbian
 ------------------------
