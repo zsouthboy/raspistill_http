@@ -1,17 +1,24 @@
 Raspistill_http
 ===============
 
-A simple python script using `web.py` that serves images from a Raspberry Pi with Rasberry Pi Camera, like a webcam might. The Pi Camera has much higher quality images compared to ip webcams, but you're not getting 15fps as a tradeoff.
+A simple python script using `web.py` that serves images from a Raspberry Pi with Rasberry Pi Camera, like a webcam might.
+
+The Pi Camera has much higher quality images compared to cheap ip webcams.
+
 Uses `daemonize` from http://software.clapper.org/daemonize/, a compiled copy is in the bin directory.
-`raspistill` doesn't have a built-in run forever daemon mode, so it's launched with `daemonize` and the appropriate arguments to run for 24d before exiting, after which it will be relaunched for another 24d at the next browsing of the page.
-A simple javascript function refreshes the image in your webbrowser, or use an IP Camera app on your mobile device to watch your Pi Camera.
+
+`raspistill` doesn't have a built-in run forever daemon mode, so it's launched with `daemonize` and the appropriate arguments to run for 24d(its maximum) before exiting, after which it will be relaunched for another 24d at the next browsing of the page.
+A simple javascript function refreshes the image in your browser, or use an IP Camera app on your mobile device to watch your Pi Camera.
 Intermediate files are written to RAM filesystem and not your sdcard.
 
 Installation on Raspbian
 ------------------------
 * Install `web.py` from apt
+
 `sudo apt-get install python-webpy`
+
 * clone this repository
+
 `git clone https://github.com/zsouthboy/raspistill_http.git` 
 
 Usage
